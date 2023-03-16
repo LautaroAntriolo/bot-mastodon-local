@@ -2,8 +2,21 @@ def funcionViernes(mje, *args):
     Toot.video(f'''{mje}''','TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4',*args)  
 
 def funcionDiaria(mje,dia,nombreImagen, *args):
-    Toot.imagen(f'{mje}', f'TootMastodonLocal/img/{dia}/{nombreImagen}.jpg',*args)
+    Toot.imagen(f'{mje}', f'TootMastodonLocal/img/{dia}/{nombreImagen}',*args)
 
+def cantImagenes(dia):
+    carpeta = f'C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/img/{dia.capitalize()}'
+    extensiones_permitidas = ('.jpg', '.jpeg', '.png', '.gif')
+
+    cantidad_imagenes = len([nombre_archivo for nombre_archivo in os.listdir(carpeta)
+                        if nombre_archivo.endswith(extensiones_permitidas)])
+    return cantidad_imagenes
+
+def nombreImagenes(dia):
+    import os
+    carpeta =f'C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/img/{dia.capitalize()}'
+    nombres_archivos = os.listdir(carpeta)
+    return nombres_archivos
 
 nameDias ={
         'lunes':1,
@@ -37,13 +50,15 @@ def mensajeSegunElDia():
         return f'Hoy es Domingo de recuperación...'
 
 if __name__=="__main__":
+    import os
     from datetime import datetime
     import Toot
     import random
     mensajedeldia = mensajeSegunElDia()
     quediaes = diaDeHoy()
+    nombreArchivos = nombreImagenes(quediaes)
     print(quediaes)
     if quediaes == 'viernes':
         funcionViernes(mensajedeldia, 'viernes','Friday','shrek')
     else:
-        funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{quediaes}{random.randint(1,4)}',quediaes, quediaes.capitalize())
+        funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{random.choice(nombreArchivos)}',quediaes, quediaes.capitalize())
