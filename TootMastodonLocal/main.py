@@ -14,7 +14,7 @@ def cantImagenes(dia):
 
 def nombreImagenes(dia):
     import os
-    carpeta =f'C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/img/{dia.capitalize()}'
+    carpeta =f'C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/img/{dia.capitalize()}/'
     nombres_archivos = os.listdir(carpeta)
     return nombres_archivos
 
@@ -35,7 +35,7 @@ def diaDeHoy():
 def mensajeSegunElDia():
     posicionDeHoy = nameDias[diaDeHoy()]
     if posicionDeHoy == 5:
-        return "¡Es hoy! Gracias a Dios es Vierness"
+        return "Gracias a Dios es Vierness"
     elif posicionDeHoy == 1: # Lunes
         return f'faltan 4 días para el Viernes.'
     elif posicionDeHoy == 2: # martes
