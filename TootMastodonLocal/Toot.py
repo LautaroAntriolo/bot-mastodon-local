@@ -25,7 +25,7 @@ def post_imagen(mje,media,Sensitive=False, formato='jpg',visibilidad='public'):
     # await asyncio.sleep(5) # espera 10 segundos antes de publicar
     masto.status_post(status=f'{mje}', media_ids=[media_id], sensitive=Sensitive, visibility=visibilidad)
 
-def video(mje,media,*args):
+async def video(mje,media,*args):
     numerales = ''
     for arg in args:
         numerales += f'#{arg} '

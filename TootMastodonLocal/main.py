@@ -1,8 +1,38 @@
-def funcionViernes(mje, *args):
-    Toot.video(f'''{mje}''','TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4',*args)  
+async def post_video(mje,media,Sensitive=False, formato='mp4',visibilidad='public'):
+    with open(f'{media}', 'rb') as video_file:
+        video_bytes = video_file.read()
+    media_dict = masto.media_post(media_file=video_bytes, mime_type=f'video/{formato}')
+    media_id = media_dict['id']
+    await asyncio.sleep(5) # espera 10 segundos antes de publicar
+    masto.status_post(status=f'{mje}', media_ids=[media_id], sensitive=Sensitive, visibility=f'{visibilidad}')
+
+
+def post_imagen(mje,media,Sensitive=False, formato='jpg',visibilidad='public'):
+    media_dict = masto.media_post(media_file=media, mime_type=f'imagen/{formato}')
+    media_id = media_dict['id']
+    # await asyncio.sleep(5) # espera 10 segundos antes de publicar
+    masto.status_post(status=f'{mje}', media_ids=[media_id], sensitive=Sensitive, visibility=visibilidad)
+
+def video(mje,media,*args):
+    numerales = ''
+    for arg in args:
+        numerales += f'#{arg} '
+    asyncio.run(post_video(f'''{mje}
+{numerales}''', f'{media}'))
+
+def imagen(mje,media,*args):
+    numerales = ''
+    for arg in args:
+        numerales += f'#{arg} '
+    print(media, type(media))
+    post_imagen(f'''{mje} {numerales}''', media)
+
+
+# def funcionViernes(mje, *args):
+#     video(f'''{mje}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4',*args)  
 
 def funcionDiaria(mje,dia,nombreImagen, *args):
-    Toot.imagen(f'{mje}', f'TootMastodonLocal/img/{dia}/{nombreImagen}',*args)
+    imagen(f'{mje}', f'TootMastodonLocal/img/{dia}/{nombreImagen}',*args)
 
 def cantImagenes(dia):
     carpeta = f'C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/img/{dia.capitalize()}'
@@ -52,13 +82,24 @@ def mensajeSegunElDia():
 if __name__=="__main__":
     import os
     from datetime import datetime
-    import Toot
     import random
+    from mastodon import Mastodon
+    from dotenv import load_dotenv
+    import asyncio
+    import tracemalloc
+
+    load_dotenv()
+    tracemalloc.start()
+    masto = Mastodon(
+        access_token = os.getenv("TOKEN"),
+        api_base_url = "https://masto.es"
+    )
+
     mensajedeldia = mensajeSegunElDia()
     quediaes = diaDeHoy()
     nombreArchivos = nombreImagenes(quediaes)
-    print(quediaes)
     if quediaes == 'viernes':
-        funcionViernes(mensajedeldia, 'viernes','Friday','shrek')
+        video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek')
     else:
         funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{random.choice(nombreArchivos)}',quediaes, quediaes.capitalize())
+    tracemalloc.stop()
