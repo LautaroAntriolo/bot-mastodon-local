@@ -6,6 +6,15 @@ async def post_video(mje,media,Sensitive=False, formato='mp4',visibilidad='publi
     await asyncio.sleep(5) # espera 10 segundos antes de publicar
     masto.status_post(status=f'{mje}', media_ids=[media_id], sensitive=Sensitive, visibility=f'{visibilidad}')
 
+def tendencias(n):
+    tendencias = []
+    cadena = ''
+    for i in range(n):
+        tendencias.append(masto.trending_tags(limit=n)[i]['name'])
+    cadena += ' #'.join(tendencias)
+    return cadena
+
+    
 
 def post_imagen(mje,media,Sensitive=False, formato='jpg',visibilidad='public'):
     media_dict = masto.media_post(media_file=media, mime_type=f'imagen/{formato}')
@@ -94,12 +103,12 @@ if __name__=="__main__":
         access_token = os.getenv("TOKEN"),
         api_base_url = "https://masto.es"
     )
-
+    hashtags = tendencias(5)
     mensajedeldia = mensajeSegunElDia()
     quediaes = diaDeHoy()
     nombreArchivos = nombreImagenes(quediaes)
     if quediaes == 'viernes':
         video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek')
     else:
-        funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{random.choice(nombreArchivos)}',quediaes, quediaes.capitalize())
+        funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{str(random.choice(nombreArchivos))}',quediaes, quediaes.capitalize(), hashtags)
     tracemalloc.stop()
