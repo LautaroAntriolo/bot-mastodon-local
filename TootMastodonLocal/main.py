@@ -107,8 +107,16 @@ if __name__=="__main__":
     mensajedeldia = mensajeSegunElDia()
     quediaes = diaDeHoy()
     nombreArchivos = nombreImagenes(quediaes)
-    if quediaes == 'viernes':
-        video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek')
+    hora = datetime.now().hour
+    if hora < 11:
+        if quediaes == 'viernes':
+            video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek')
+        else:
+            funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{str(random.choice(nombreArchivos))}',quediaes, quediaes.capitalize(), hashtags)
     else:
-        funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{str(random.choice(nombreArchivos))}',quediaes, quediaes.capitalize(), hashtags)
+        if quediaes == 'viernes':
+            video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek')
+        else:
+            archivo = str(random.choice(nombreImagenes("imgrandom")))
+            funcionDiaria(mensajedeldia,'imgrandom',f'{archivo}', hashtags)
     tracemalloc.stop()
