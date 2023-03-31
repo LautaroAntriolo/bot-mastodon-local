@@ -110,7 +110,7 @@ if __name__=="__main__":
     hora = datetime.now().hour
     if hora < 11:
         if quediaes == 'viernes':
-            video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek')
+            video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek', hashtags)
         else:
             funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{str(random.choice(nombreArchivos))}',quediaes, quediaes.capitalize(), hashtags)
     else:
