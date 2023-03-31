@@ -115,7 +115,8 @@ if __name__=="__main__":
             funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{str(random.choice(nombreArchivos))}',quediaes, quediaes.capitalize(), hashtags)
     else:
         if quediaes == 'viernes':
-            video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek')
+            archivo = str(random.choice(nombreImagenes("imgrandom")))
+            funcionDiaria(mensajedeldia,'imgrandom',f'{archivo}', hashtags)
         else:
             archivo = str(random.choice(nombreImagenes("imgrandom")))
             funcionDiaria(mensajedeldia,'imgrandom',f'{archivo}', hashtags)
