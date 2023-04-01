@@ -14,6 +14,26 @@ def tendencias(n):
     cadena += ' #'.join(tendencias)
     return cadena
 
+def registroImagenes(semanaNumero,nombreImagen):
+    # nombreImagen = str(nombreImagen)
+    if os.path.exists('C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/registro.json'):
+        with open('C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/registro.json','r') as f:
+                data = json.load(f)
+                if f'semana {semanaNumero}' in data:
+                    # La clave está en el archivo JSON
+                    data[f'semana {semanaNumero}'].append(nombreImagen)
+                else:
+                    # La clave NO está en el archivo JSON
+                    print("Entramos acá ehhhh ")
+                    data[f'semana {semanaNumero}'] = []
+                    data[f'semana {semanaNumero}'].append(nombreImagen)
+        with open('C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/registro.json', 'w') as f:
+            json.dump(data, f)
+    else:
+        data = {}
+        with open('C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/registro.json', 'w') as f: 
+            data[f'semana {semanaNumero}'] = [nombreImagen]
+            json.dump(data, f)
     
 
 def post_imagen(mje,media,Sensitive=False, formato='jpg',visibilidad='public'):
@@ -67,7 +87,7 @@ nameDias ={
         'domingo':7
     }
 def diaDeHoy():
-    dia = datetime.now().weekday()
+    dia = datetime.datetime.now().weekday()
     return list(nameDias.keys())[dia]
 
 
@@ -90,13 +110,17 @@ def mensajeSegunElDia():
 
 if __name__=="__main__":
     import os
-    from datetime import datetime
+    import datetime
     import random
     from mastodon import Mastodon
     from dotenv import load_dotenv
     import asyncio
     import tracemalloc
+    import json
 
+    date_string = str(datetime.date.today())
+    fecha = datetime.datetime.strptime(date_string, '%Y-%m-%d')
+    semanaNumero = fecha.isocalendar()[1]
     load_dotenv()
     tracemalloc.start()
     masto = Mastodon(
@@ -107,17 +131,21 @@ if __name__=="__main__":
     mensajedeldia = mensajeSegunElDia()
     quediaes = diaDeHoy()
     nombreArchivos = nombreImagenes(quediaes)
-    hora = datetime.now().hour
+    hora = datetime.datetime.now().hour
+    queImagenSubo = str(random.choice(nombreArchivos))
     if hora < 11:
         if quediaes == 'viernes':
             video(f'''{mensajedeldia}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4','viernes','Friday','shrek', hashtags)
         else:
-            funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{str(random.choice(nombreArchivos))}',quediaes, quediaes.capitalize(), hashtags)
+            funcionDiaria(mensajedeldia,quediaes.capitalize(),f'{queImagenSubo}',quediaes, quediaes.capitalize(), hashtags)
+            registroImagenes(semanaNumero,queImagenSubo)
     else:
         if quediaes == 'viernes':
             archivo = str(random.choice(nombreImagenes("imgrandom")))
             funcionDiaria(mensajedeldia,'imgrandom',f'{archivo}', hashtags)
+            registroImagenes(semanaNumero,archivo)
         else:
             archivo = str(random.choice(nombreImagenes("imgrandom")))
             funcionDiaria(mensajedeldia,'imgrandom',f'{archivo}', hashtags)
+            registroImagenes(semanaNumero,archivo)
     tracemalloc.stop()
