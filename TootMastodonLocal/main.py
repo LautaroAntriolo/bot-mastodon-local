@@ -37,7 +37,7 @@ def registroImagenes(semanaNumero,nombreImagen):
     
 
 def post_imagen(mje,media,Sensitive=False, formato='jpg',visibilidad='public'):
-    media_dict = masto.media_post(media_file=media, mime_type=f'imagen/{formato}')
+    media_dict = masto.media_post(media_file={media}, mime_type=f'imagen/{formato}')
     media_id = media_dict['id']
     # await asyncio.sleep(5) # espera 10 segundos antes de publicar
     masto.status_post(status=f'{mje}', media_ids=[media_id], sensitive=Sensitive, visibility=visibilidad)
@@ -146,6 +146,6 @@ if __name__=="__main__":
             registroImagenes(semanaNumero,archivo)
         else:
             archivo = str(random.choice(nombreImagenes("imgrandom")))
-            funcionDiaria(mensajedeldia,'imgrandom',f'{archivo}', hashtags)
+            funcionDiaria(str(mensajedeldia),'imgrandom',f'{archivo}', hashtags)
             registroImagenes(semanaNumero,archivo)
     tracemalloc.stop()
