@@ -36,10 +36,10 @@ def registroImagenes(semanaNumero,nombreImagen):
             json.dump(data, f)
     
 
-def post_imagen(mje,media,Sensitive=False, formato='jpg',visibilidad='public'):
-    media_dict = masto.media_post(media_file={media}, mime_type=f'imagen/{formato}')
+def post_imagen(mje,media,Sensitive=False,formato='jpg',visibilidad='public'):
+   
+    media_dict = masto.media_post(media_file={media}, mime_type=f'image/{formato}')
     media_id = media_dict['id']
-    # await asyncio.sleep(5) # espera 10 segundos antes de publicar
     masto.status_post(status=f'{mje}', media_ids=[media_id], sensitive=Sensitive, visibility=visibilidad)
 
 def video(mje,media,*args):
@@ -56,9 +56,6 @@ def imagen(mje,media,*args):
     print(media, type(media))
     post_imagen(f'''{mje} {numerales}''', media)
 
-
-# def funcionViernes(mje, *args):
-#     video(f'''{mje}''','C:/Lautaro/Python-personal/Mastodon/TootMastodonLocal/video/viernes/graciasADiosEsViernes.mp4',*args)  
 
 def funcionDiaria(mje,dia,nombreImagen, *args):
     imagen(f'{mje}', f'TootMastodonLocal/img/{dia}/{nombreImagen}',*args)

@@ -21,7 +21,7 @@
 
 
 # def post_imagen(mje,media,Sensitive=False, formato='jpg',visibilidad='public'):
-#     media_dict = masto.media_post(media_file=media, mime_type=f'imagen/{formato}')
+#     media_dict = masto.media_post(media_file=media, mime_type=f'image/{formato}')
 #     media_id = media_dict['id']
 #     # await asyncio.sleep(5) # espera 10 segundos antes de publicar
 #     masto.status_post(status=f'{mje}', media_ids=[media_id], sensitive=Sensitive, visibility=visibilidad)
